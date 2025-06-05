@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Hoan start tặng em ()</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            height: 100vh;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            perspective: 1000px;
+            position: relative;
+        }
+
+        .background-pattern {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(circle at 10% 20%, rgba(255,255,255,0.05) 0px, transparent 2px),
+                radial-gradient(circle at 80% 40%, rgba(255,255,255,0.05) 0px, transparent 2px),
+                radial-gradient(circle at 30% 70%, rgba(255,255,255,0.05) 0px, transparent 2px);
+            background-size: 300px 300px;
+            z-index: -1;
+        }
+
+        .marquee {
+            position: fixed;
+            top: 10px;
+            width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            z-index: 999;
+        }
+
+        .marquee span {
+            display: inline-block;
+            padding-left: 100%;
+            animation: marquee 15s linear infinite;
+            color: #fff;
+            font-size: 20px;
+            font-weight: bold;
+            text-shadow: 1px 1px 3px #000;
+            letter-spacing: 1px;
+            font-family: 'Dancing Script', cursive;
+        }
+
+        @media (max-width: 600px) {
+            .marquee span {
+                font-size: 16px;
+            }
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+
+        .gift-container {
+            position: relative;
+            width: 250px;
+            height: 250px;
+            transform-style: preserve-3d;
+            transition: transform 0.5s ease;
+            cursor: pointer;
+        }
+
+        @media (max-width: 600px) {
+            .gift-container {
+                width: 200px;
+                height: 200px;
+            }
+        }
+
+        .cube {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transform: rotateX(15deg) rotateY(15deg);
+            transition: transform 1s cubic-bezier(0.17, 0.67, 0.83, 0.67);
+            display: block;
+        }
+
+        .face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 50px;
+            color: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow:
+                inset 0 0 20px rgba(255, 255, 255, 0.5),
+                0 10px 20px rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            transition: all 0.5s ease;
+            overflow: hidden;
+        }
+
+        @media (max-width: 600px) {
+            .face {
+                font-size: 40px;
+            }
+        }
+
+        .face::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent 70%);
+            z-index: 1;
+        }
+
+        .face.front { transform: translateZ(125px); background: linear-gradient(145deg, #ff6b8b, #ff8e53); }
+        .face.back { transform: rotateY(180deg) translateZ(125px); background: linear-gradient(145deg, #ff8e53, #ff6b8b); }
+        .face.right { transform: rotateY(90deg) translateZ(125px); background: linear-gradient(145deg, #ff8e53, #ff416c); }
+        .face.left { transform: rotateY(-90deg) translateZ(125px); background: linear-gradient(145deg, #ff416c, #ff8e53); }
+        .face.top { transform: rotateX(90deg) translateZ(125px); background: linear-gradient(145deg, #ff6b8b, #ff8e53); }
+        .face.bottom { transform: rotateX(-90deg) translateZ(125px); background: linear-gradient(145deg, #ff8e53, #ff6b8b); }
+
+        @media (max-width: 600px) {
+            .face.front { transform: translateZ(100px); }
+            .face.back { transform: rotateY(180deg) translateZ(100px); }
+            .face.right { transform: rotateY(90deg) translateZ(100px); }
+            .face.left { transform: rotateY(-90deg) translateZ(100px); }
+            .face.top { transform: rotateX(90deg) translateZ(100px); }
+            .face.bottom { transform: rotateX(-90deg) translateZ(100px); }
+        }
+
+        .bow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) translateZ(130px);
+            z-index: 10;
+            pointer-events: none;
+            display: block;
+        }
+
+        @media (max-width: 600px) {
+            .bow {
+                transform: translate(-50%, -50%) translateZ(105px);
+            }
+        }
+
+        .bow-center {
+            width: 30px;
+            height: 30px;
+            background: #ff416c;
+            border-radius: 50%;
+            position: relative;
+            box-shadow: 0 0 10px rgba(255, 65, 108, 0.8);
+            z-index: 3;
+        }
+
+        .bow-loop {
+            position: absolute;
+            width: 60px;
+            height: 45px;
+            border: 8px solid #ff6b8b;
+            border-radius: 50%;
+            top: -10px;
+            z-index: 2;
+        }
+
+        .bow-loop.left { left: -50px; clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
+        .bow-loop.right { right: -50px; clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
+
+        @media (max-width: 600px) {
+            .bow-center {
+                width: 25px;
+                height: 25px;
+            }
+            .bow-loop {
+                width: 50px;
+                height: 35px;
+                border: 6px solid #ff6b8b;
+            }
+            .bow-loop.left { left: -40px; }
+            .bow-loop.right { right: -40px; }
+        }
+
+        .message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            background: linear-gradient(135deg, #ffffff, #f8f9fa);
+            padding: 20px 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+            font-size: 18px;
+            color: #d63031;
+            text-align: center;
+            transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 10;
+            font-weight: 600;
+            border: 3px solid #ff6b8b;
+            opacity: 0;
+            line-height: 1.6;
+            width: 90%;
+            max-width: 400px;
+            white-space: normal;
+            font-family: 'Dancing Script', cursive;
+        }
+
+        @media (max-width: 600px) {
+            .message {
+                padding: 15px 20px;
+                font-size: 16px;
+                max-width: 300px;
+                border: 2px solid #ff6b8b;
+            }
+        }
+
+        .message-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .message::before {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            right: 8px;
+            bottom: 8px;
+            border: 1px solid rgba(255, 107, 139, 0.3);
+            border-radius: 10px;
+            pointer-events: none;
+        }
+
+        .gift-container.open .message {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+            top: 50%;
+        }
+
+        .glow {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,107,139,0.6), transparent 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+            filter: blur(30px);
+            opacity: 0.7;
+            animation: glowPulse 3s infinite alternate;
+        }
+
+        @media (max-width: 600px) {
+            .glow {
+                width: 200px;
+                height: 200px;
+                filter: blur(20px);
+            }
+        }
+
+        @keyframes glowPulse {
+            0% { opacity: 0.5; }
+            100% { opacity: 0.8; }
+        }
+
+        .petal {
+            position: fixed;
+            top: -50px;
+            color: #ff9aa2;
+            font-size: 24px;
+            opacity: 0.8;
+            pointer-events: none;
+            animation: fall-petal linear forwards;
+            z-index: 60;
+            user-select: none;
+            text-shadow: 0 0 8px rgba(255,255,255,0.7);
+        }
+
+        @keyframes fall-petal {
+            to { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+
+        .snowflake {
+            position: fixed;
+            top: -50px;
+            color: #ffffff;
+            font-size: 16px;
+            opacity: 0.7;
+            pointer-events: none;
+            animation: fall-snow linear forwards;
+            z-index: 50;
+            user-select: none;
+            text-shadow: 0 0 5px rgba(255,255,255,0.8);
+        }
+
+        @keyframes fall-snow {
+            to { transform: translateY(100vh) rotate(720deg); opacity: 0.2; }
+        }
+
+        .meteor {
+            position: fixed;
+            width: 4px;
+            height: 4px;
+            background: #ffffff;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #ffffff, 0 0 20px #ffffff;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 70;
+            animation: shoot-meteor 1s linear forwards;
+        }
+
+        .meteor::after {
+            content: '';
+            position: absolute;
+            width: 100px;
+            height: 2px;
+            background: linear-gradient(to left, rgba(255,255,255,0.8), transparent);
+            transform: rotate(-45deg);
+            left: -50px;
+            top: 1px;
+        }
+
+        @keyframes shoot-meteor {
+            0% { opacity: 1; transform: translate(0, 0); }
+            100% { opacity: 0; transform: translate(200px, 200px); }
+        }
+
+        .heart {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background-color: #ff6b8b;
+            transform: rotate(-45deg);
+            left: 50%;
+            bottom: 100px;
+            opacity: 0.8;
+            animation: floatUp 4s forwards;
+            pointer-events: none;
+            z-index: 100;
+            box-shadow: 0 0 10px rgba(255, 107, 139, 0.8);
+        }
+
+        .heart::before,
+        .heart::after {
+            content: "";
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #ff6b8b;
+            border-radius: 50%;
+        }
+
+        .heart::before { top: -10px; left: 0; }
+        .heart::after { top: 0; right: -10px; }
+
+        @keyframes floatUp {
+            0% { transform: translateX(0) translateY(0) rotate(-45deg); opacity: 0.8; }
+            100% { transform: translateX(calc(-50vw + 50%)) translateY(-150vh) rotate(45deg); opacity: 0; }
+        }
+
+        .signature {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+            font-style: italic;
+            z-index: 100;
+            text-shadow: 0 0 5px rgba(0,0,0,0.5);
+        }
+
+        .sparkle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background-color: white;
+            border-radius: 50%;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 5;
+            box-shadow: 0 0 10px white;
+            animation: sparkle 1s ease-out;
+        }
+
+        @keyframes sparkle {
+            0% { opacity: 0.8; transform: scale(0); }
+            50% { opacity: 1; transform: scale(1.5); }
+            100% { opacity: 0; transform: scale(0); }
+        }
+
+        .instruction {
+            position: fixed;
+            top: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            font-size: 16px;
+            text-align: center;
+            background: rgba(0,0,0,0.3);
+            padding: 8px 15px;
+            border-radius: 8px;
+            z-index: 100;
+            animation: pulse 2s infinite;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.2);
+            font-weight: 500;
+            max-width: 90%;
+        }
+
+        @media (max-width: 600px) {
+            .instruction {
+                font-size: 14px;
+                padding: 6px 12px;
+                top: 40px;
+            }
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.7; transform: translateX(-50%) scale(1); }
+            50% { opacity: 1; transform: translateX(-50%) scale(1.05); }
+            100% { opacity: 0.7; transform: translateX(-50%) scale(1); }
+        }
+
+        .controls {
+            position: fixed;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 100;
+            background: rgba(0,0,0,0.3);
+            padding: 8px 15px;
+            border-radius: 20px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .control-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            min-width: 100px;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+            font-size: 14px;
+        }
+
+        .control-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .control-btn:active {
+            transform: translateY(1px);
+        }
+
+        @media (max-width: 600px) {
+            .control-btn {
+                min-width: 80px;
+                padding: 6px 10px;
+                font-size: 12px;
+            }
+        }
+
+        .rotation-info {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.3);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            z-index: 100;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.2);
+            font-family: monospace;
+        }
+
+        @media (max-width: 600px) {
+            .rotation-info {
+                font-size: 12px;
+                padding: 6px 10px;
+            }
+        }
+
+        .face-icon {
+            font-size: 60px;
+            text-shadow: 0 0 10px rgba(0,0,0,0.3);
+            animation: floatIcon 3s infinite ease-in-out;
+        }
+
+        @media (max-width: 600px) {
+            .face-icon {
+                font-size: 50px;
+            }
+        }
+
+        @keyframes floatIcon {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .paper-texture {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(90deg, rgba(0,0,0,0.05) 1px, transparent 1px),
+                linear-gradient(rgba(0,0,0,0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .disappear {
+            transform: scale(0.5);
+        }
+
+        .focus-letter {
+            animation: focusLetter 1.5s forwards;
+        }
+
+        @keyframes focusLetter {
+            to {
+                transform: translate(-50%, -50%) scale(1.1);
+                box-shadow: 0 20px 40px rgba(0,0,0,0.35);
+            }
+        }
+
+        .focus-background {
+            animation: focusBackground 1.5s forwards;
+        }
+
+        @keyframes focusBackground {
+            to {
+                filter: blur(5px);
+                opacity: 0.7;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="background-pattern" id="backgroundPattern"></div>
+    <div class="marquee">
+        <span>🌸 Chào cô gái xinh đẹp  !  🌸</span>
+    </div>
+    <div class="glow" id="glow"></div>
+    <div class="instruction" id="instruction">Kéo để xoay khối lập phương | Nhấp để mở lá thư | Double tap để tập trung vào lá thư</div>
+    <div class="rotation-info">Xoay: X <span id="rotX">15°</span> | Y <span id="rotY">15°</span></div>
+    <div class="gift-container" id="giftBox">
+        <div class="cube" id="cube">
+            <div class="face front"><div class="face-icon">💌</div><div class="paper-texture"></div></div>
+            <div class="face back"><div class="face-icon">❤️</div><div class="paper-texture"></div></div>
+            <div class="face right"><div class="face-icon">😢</div><div class="paper-texture"></div></div>
+            <div class="face left"><div class="face-icon">🙏</div><div class="paper-texture"></div></div>
+            <div class="face top">
+                <div class="bow" id="bow">
+                    <div class="bow-loop left"></div>
+                    <div class="bow-center"></div>
+                    <div class="bow-loop right"></div>
+                </div>
+                <div class="paper-texture"></div>
+            </div>
+            <div class="face bottom"><div class="face-icon">💖</div><div class="paper-texture"></div></div>
+        </div>
+        <div class="message" id="message">
+            <div class="message-content">
+                💌 Hẹ Hẹ Hẹ   💌<br><br>
+                 chúc cậu buổi sáng tốt lành , đi làm ngày nào vui ngày đấy  💖<br>
+            </div>
+        </div>
+    </div>
+    <div class="controls">
+        <button class="control-btn" id="autoRotate">Tự động xoay</button>
+        <button class="control-btn" id="reset">Đặt lại</button>
+        <button class="control-btn" id="openBtn">Mở thư</button>
+    </div>
+    <div class="signature">❤️</div>
+    <script>
+        const giftBox = document.getElementById('giftBox');
+        const cube = document.getElementById('cube');
+        const bow = document.getElementById('bow');
+        const message = document.getElementById('message');
+        const rotX = document.getElementById('rotX');
+        const rotY = document.getElementById('rotY');
+        const autoRotateBtn = document.getElementById('autoRotate');
+        const resetBtn = document.getElementById('reset');
+        const openBtn = document.getElementById('openBtn');
+        const backgroundPattern = document.getElementById('backgroundPattern');
+        const glow = document.getElementById('glow');
+        const instruction = document.getElementById('instruction');
+
+        let isDragging = false;
+        let startX, startY;
+        let rotationX = 15;
+        let rotationY = 15;
+        let autoRotate = true;
+        let openState = false;
+        let focusState = false;
+
+        // Kiểm tra thiết bị di động
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        const petalCount = isMobile ? 20 : 50;
+        const heartCount = isMobile ? 15 : 30;
+        const sparkleCount = isMobile ? 15 : 30;
+        const snowflakeCount = isMobile ? 30 : 60;
+        const meteorCount = isMobile ? 5 : 10;
+
+        function updateCubeRotation() {
+            cube.style.transform = `rotateX(${rotationX}deg) rotateY(${rotationY}deg)`;
+            rotX.textContent = `${Math.round(rotationX)}°`;
+            rotY.textContent = `${Math.round(rotationY)}°`;
+        }
+
+        // Hàm xóa các hiệu ứng
+        function clearEffects() {
+            const petals = document.querySelectorAll('.petal');
+            const hearts = document.querySelectorAll('.heart');
+            const sparkles = document.querySelectorAll('.sparkle');
+            const snowflakes = document.querySelectorAll('.snowflake');
+            const meteors = document.querySelectorAll('.meteor');
+            petals.forEach(petal => petal.remove());
+            hearts.forEach(heart => heart.remove());
+            sparkles.forEach(sparkle => sparkle.remove());
+            snowflakes.forEach(snowflake => snowflake.remove());
+            meteors.forEach(meteor => meteor.remove());
+        }
+
+        giftBox.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            startX = e.clientX;
+            startY = e.clientY;
+            autoRotate = false;
+            autoRotateBtn.textContent = "Tự động xoay";
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging || openState || focusState) return;
+            const deltaX = e.clientX - startX;
+            const deltaY = e.clientY - startY;
+            rotationY += deltaX * 0.5;
+            rotationX -= deltaY * 0.5;
+            startX = e.clientX;
+            startY = e.clientY;
+            updateCubeRotation();
+        });
+
+        document.addEventListener('mouseup', () => {
+            isDragging = false;
+        });
+
+        giftBox.addEventListener('touchstart', (e) => {
+            isDragging = true;
+            startX = e.touches[0].clientX;
+            startY = e.touches[0].clientY;
+            autoRotate = false;
+            autoRotateBtn.textContent = "Tự động xoay";
+            e.preventDefault();
+        });
+
+        document.addEventListener('touchmove', (e) => {
+            if (!isDragging || openState || focusState) return;
+            const deltaX = e.touches[0].clientX - startX;
+            const deltaY = e.touches[0].clientY - startY;
+            rotationY += deltaX * 0.5;
+            rotationX -= deltaY * 0.5;
+            startX = e.touches[0].clientX;
+            startY = e.touches[0].clientY;
+            updateCubeRotation();
+            e.preventDefault();
+        });
+
+        document.addEventListener('touchend', () => {
+            isDragging = false;
+        });
+
+        function autoRotateCube() {
+            if (autoRotate && !openState && !focusState) {
+                rotationY += 0.5;
+                rotationX += 0.2;
+                updateCubeRotation();
+            }
+            requestAnimationFrame(autoRotateCube);
+        }
+        autoRotateCube();
+
+        autoRotateBtn.addEventListener('click', () => {
+            autoRotate = !autoRotate;
+            autoRotateBtn.textContent = autoRotate ? "Dừng xoay" : "Tự động xoay";
+        });
+
+        resetBtn.addEventListener('click', () => {
+            rotationX = 15;
+            rotationY = 15;
+            updateCubeRotation();
+            autoRotate = true;
+            autoRotateBtn.textContent = "Dừng xoay";
+            openState = false;
+            focusState = false;
+            giftBox.classList.remove('open');
+            cube.style.display = 'block';
+            bow.style.display = 'block';
+            cube.classList.remove('disappear');
+            message.classList.remove('focus-letter');
+            backgroundPattern.classList.remove('focus-background');
+            glow.classList.remove('focus-background');
+            instruction.style.opacity = '1';
+            clearEffects();
+        });
+
+        function openBox() {
+            if (openState || focusState) return;
+            openState = true;
+            giftBox.classList.add('open');
+            cube.style.display = 'none';
+            bow.style.display = 'none';
+            clearEffects();
+            startPetalRain();
+            startHearts();
+            startSnowflakes();
+            createSparkles();
+            giftBox.style.animation = 'vibrate 0.5s ease';
+            setTimeout(() => {
+                giftBox.style.animation = '';
+            }, 500);
+        }
+
+        openBtn.addEventListener('click', openBox);
+        giftBox.addEventListener('click', openBox);
+
+        giftBox.addEventListener('dblclick', () => {
+            if (focusState || !openState) return;
+            focusState = true;
+            cube.style.display = 'none';
+            bow.style.display = 'none';
+            message.classList.add('focus-letter');
+            backgroundPattern.classList.add('focus-background');
+            glow.classList.add('focus-background');
+            instruction.style.opacity = '0.5';
+        });
+
+        function createSparkles() {
+            for (let i = 0; i < sparkleCount; i++) {
+                setTimeout(() => {
+                    const sparkle = document.createElement('div');
+                    sparkle.classList.add('sparkle');
+                    const x = 150 + Math.random() * 100;
+                    const y = 150 + Math.random() * 100;
+                    sparkle.style.left = `${x}px`;
+                    sparkle.style.top = `${y}px`;
+                    const size = 3 + Math.random() * 3;
+                    sparkle.style.width = `${size}px`;
+                    sparkle.style.height = `${size}px`;
+                    sparkle.style.animationDuration = `${0.5 + Math.random() * 0.5}s`;
+                    document.body.appendChild(sparkle);
+                    setTimeout(() => { sparkle.remove(); }, 1000);
+                }, i * 50);
+            }
+        }
+
+        function startPetalRain() {
+            for (let i = 0; i < petalCount; i++) {
+                setTimeout(() => {
+                    const petal = document.createElement('div');
+                    petal.classList.add('petal');
+                    petal.innerText = '🌸';
+                    petal.style.left = Math.random() * window.innerWidth + 'px';
+                    petal.style.fontSize = 20 + Math.random() * 10 + 'px';
+                    petal.style.animationDuration = 5 + Math.random() * 3 + 's';
+                    document.body.appendChild(petal);
+                    setTimeout(() => petal.remove(), 8000);
+                }, i * 100);
+            }
+        }
+
+        function startSnowflakes() {
+            for (let i = 0; i < snowflakeCount; i++) {
+                setTimeout(() => {
+                    const snowflake = document.createElement('div');
+                    snowflake.classList.add('snowflake');
+                    snowflake.innerText = '❄️';
+                    snowflake.style.left = Math.random() * window.innerWidth + 'px';
+                    snowflake.style.fontSize = 12 + Math.random() * 8 + 'px';
+                    snowflake.style.animationDuration = 6 + Math.random() * 4 + 's';
+                    document.body.appendChild(snowflake);
+                    setTimeout(() => snowflake.remove(), 10000);
+                }, i * 200);
+            }
+        }
+
+        function startMeteors() {
+            setInterval(() => {
+                if (!openState && !focusState) {
+                    for (let i = 0; i < Math.floor(Math.random() * 3) + 1; i++) {
+                        setTimeout(() => {
+                            const meteor = document.createElement('div');
+                            meteor.classList.add('meteor');
+                            const startX = Math.random() * (window.innerWidth - 200);
+                            const startY = -50;
+                            meteor.style.left = `${startX}px`;
+                            meteor.style.top = `${startY}px`;
+                            meteor.style.animationDuration = `${0.5 + Math.random() * 0.5}s`;
+                            document.body.appendChild(meteor);
+                            setTimeout(() => meteor.remove(), 1000);
+                        }, i * 200);
+                    }
+                }
+            }, 3000);
+        }
+
+        function startHearts() {
+            for (let i = 0; i < heartCount; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.classList.add('heart');
+                    heart.style.left = (window.innerWidth / 2 + (Math.random() - 0.5) * 200) + 'px';
+                    heart.style.bottom = '100px';
+                    heart.style.animationDuration = (3 + Math.random() * 2) + 's';
+                    heart.style.width = (15 + Math.random() * 10) + 'px';
+                    heart.style.height = heart.style.width;
+                    document.body.appendChild(heart);
+                    setTimeout(() => heart.remove(), 5000);
+                }, i * 100);
+            }
+        }
+
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes vibrate {
+                0% { transform: rotateX(${rotationX}deg) rotateY(${rotationY}deg) scale(1); }
+                20% { transform: rotateX(${rotationX+3}deg) rotateY(${rotationY+3}deg) scale(1.02); }
+                40% { transform: rotateX(${rotationX-3}deg) rotateY(${rotationY-3}deg) scale(1.01); }
+                60% { transform: rotateX(${rotationX+2}deg) rotateY(${rotationY+2}deg) scale(1.03); }
+                80% { transform: rotateX(${rotationX-2}deg) rotateY(${rotationY-2}deg) scale(1.01); }
+                100% { transform: rotateX(${rotationX}deg) rotateY(${rotationY}deg) scale(1); }
+            }
+            @keyframes attention {
+                0% { transform: rotateX(${rotationX}deg) rotateY(${rotationY}deg) scale(1); }
+                50% { transform: rotateX(${rotationX}deg) rotateY(${rotationY}deg) scale(1.1); }
+                100% { transform: rotateX(${rotationX}deg) rotateY(${rotationY}deg) scale(1); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        setInterval(() => {
+            if (!openState && !focusState) {
+                giftBox.style.animation = 'attention 2s ease';
+                setTimeout(() => { giftBox.style.animation = ''; }, 2000);
+            }
+        }, 10000);
+
+        const faces = document.querySelectorAll('.face');
+        faces.forEach(face => {
+            const texture = document.createElement('div');
+            texture.classList.add('paper-texture');
+            face.appendChild(texture);
+        });
+
+        // Start snow and meteor effects
+        startSnowflakes();
+        setInterval(startSnowflakes, 12000);
+        startMeteors();
+    </script>
+</body>
+</html>
